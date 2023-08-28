@@ -56,4 +56,14 @@ public class WebDriverStep {
     public String validarResultado() {
         return webDriverView().validarResultado();
     }
+
+    public void selectAnTabs(String criteria) {
+        webDriverView().selectButtonNavigation();
+        webDriverView().selectAnTabs(criteria);
+    }
+
+    public String validateTabs(){
+        return webDriverView().validateTabs();
+
+    }
 }

@@ -100,13 +100,19 @@ public class WebDriverGlue {
     @Then("deberia poder ver los resultados de la busqueda {string}")
     public void deberiaPoderVerLosResultadosDeLaBusqueda(String expectedText) {
         String actualText = webDriverStep.validarResultado();
-
-        // Convertir ambas cadenas a minúsculas antes de comparar
         actualText = actualText.toLowerCase();
         expectedText = expectedText.toLowerCase();
-
         Assert.assertTrue("Los resultados no contienen la palabra '" + expectedText + "'", actualText.contains(expectedText));
     }
 
+    @When("navego entre los {string}")
+    public void navegoEntreLosTabs(String criteria) {
+        webDriverStep.selectAnTabs(criteria);
+    }
 
+    @Then("deberia poder ver los resultados de la busqueda")
+    public void deberiaPoderVerLosResultadosDeLaBusqueda() {
+        String expectedMessage = webDriverStep.validateTabs();
+        Assert.assertEquals("On this page", expectedMessage);
+    }
 }

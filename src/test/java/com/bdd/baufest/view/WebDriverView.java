@@ -68,6 +68,8 @@ public class WebDriverView extends BaseView {
     @AndroidFindBy(xpath = "//*[@class='android.widget.EditText' and @index='1']")
     private MobileElement inputSearch;
 
+    @AndroidFindBy(xpath = "//*[@class='android.widget.Button' and @text='Toggle navigation bar']")
+    private MobileElement btnNavigationBar;
     AppiumDriver<MobileElement> driver = getDriver();
 
     // General methods
@@ -193,6 +195,44 @@ public class WebDriverView extends BaseView {
 
     public String validarResultado() {
         MobileElement resultadosElement = driver.findElementByXPath("//*[@class='android.widget.TextView' and @text='The Browser Object']"); // Reemplaza con tu propio XPath
+        String resultadosTexto = resultadosElement.getText();
+        Util.takeScreenShoot();
+        return resultadosTexto;
+    }
+
+    public void selectButtonNavigation() {
+        waitToElementVisible(btnNavigationBar);
+        btnNavigationBar.click();
+    }
+
+    public void selectAnTabs(String criteriaSelect) {
+        // Convertir el parámetro en minúsculas y aplicar trim()
+        criteriaSelect = criteriaSelect.toLowerCase().trim();
+
+        List<MobileElement> updatedListOptionSelect = driver.findElements(By.xpath("//android.view.View[2]/android.view.View[1]/android.widget.ListView/android.view.View"));
+        System.out.println("Lista: " + updatedListOptionSelect.size());
+
+        WebDriverWait wait = new WebDriverWait(driver, 10); // Espera hasta 10 segundos
+
+        for (WebElement option : updatedListOptionSelect) {
+            System.out.println("Listado: " + option.getText());
+            // Convertir el texto del elemento en minúsculas y aplicar trim()
+            String optionText = option.getText().toLowerCase().trim();
+
+            if (optionText.contains(criteriaSelect)) {
+                Util.takeScreenShoot();
+
+                // Esperar hasta que el elemento sea clickeable
+                wait.until(ExpectedConditions.elementToBeClickable(option));
+
+                option.click();
+                break;
+            }
+        }
+    }
+
+    public String validateTabs() {
+        MobileElement resultadosElement = driver.findElementByXPath("//*[@class='android.widget.Button' and @text='On this page']"); // Reemplaza con tu propio XPath
         String resultadosTexto = resultadosElement.getText();
         Util.takeScreenShoot();
         return resultadosTexto;

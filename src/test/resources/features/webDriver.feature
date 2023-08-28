@@ -40,16 +40,13 @@ Feature:
     Then deberia poder ver los resultados de la busqueda "browser"
 
   @test-execution @test-group @CP005
-#  Scenario Outline: Realizar una busqueda de la palabra browser
-#    Given que me encuentro en la aplicación webdriver
-#    And ingreso a la opción Webview
-#    When navego entre los "<tabs>"
-#    Then debería poder ver los resultados de la búsqueda
-#    Examples:
-#      | tabs       |
-#      | Docs       |
-#      | API        |
-#      | Help       |
-#      | Versions   |
-#      | Blog       |
-#      | Contribute |
+  Scenario Outline: Realizar una busqueda de la palabra browser
+    Given que me encuentro en la aplicación webdriver
+    And ingreso a la opcion Webview
+    When navego entre los "<tabs>"
+    Then deberia poder ver los resultados de la busqueda
+    Examples:
+      | tabs       |
+      | Docs       |
+      | API        |
+      | Contribute |

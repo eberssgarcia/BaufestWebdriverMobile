@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
         glue = "com.bdd.baufest.glue",
         features = "src/test/resources/features",
         stepNotifications = true,
-        tags = "@CP003")
+        tags = "@CP001")
 public class RunnerTest {
 
 }
