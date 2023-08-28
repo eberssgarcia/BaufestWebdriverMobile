@@ -9,6 +9,7 @@ desarrollado con Java 1.8.
 * **JDK Java verisón 1.8:** Configurar como variable de entorno.
 * **Depedencias Appium:** Estas dependencias se debe ingresar en el POM.XML
 * **apache-maven-3.9.0:** Descargar package y configurar como variable de entorno.
+* **Apppium Software:** [Click para descargar](https://github.com/appium/appium-desktop/releases/tag/v1.20.2)
 
 # Configurar proyecto
 

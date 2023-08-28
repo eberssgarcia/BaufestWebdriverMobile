@@ -18,6 +18,8 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.time.Duration;
 import java.util.List;
@@ -25,6 +27,8 @@ import java.util.List;
 import static mobile.MobileDriverManager.getDriver;
 
 public class WebDriverView extends BaseView {
+
+    private static final Logger logger = LogManager.getLogger(WebDriverView.class);
 
     // Xpath - Sign Up
     @AndroidFindBy(xpath = "//android.widget.Button[@content-desc='Login']")
@@ -164,7 +168,7 @@ public class WebDriverView extends BaseView {
             btnActive.click();
             Util.takeScreenShoot();
         } catch (Exception ex) {
-            System.out.println("No se pudo hacer click en el elemento: " + ex.getMessage());
+            logger.warn("No se pudo hacer click en el elemento: " + ex.getMessage());
         }
     }
 
@@ -210,12 +214,12 @@ public class WebDriverView extends BaseView {
         criteriaSelect = criteriaSelect.toLowerCase().trim();
 
         List<MobileElement> updatedListOptionSelect = driver.findElements(By.xpath("//android.view.View[2]/android.view.View[1]/android.widget.ListView/android.view.View"));
-        System.out.println("Lista: " + updatedListOptionSelect.size());
+        logger.info("Lista: " + updatedListOptionSelect.size());
 
         WebDriverWait wait = new WebDriverWait(driver, 10); // Espera hasta 10 segundos
 
         for (WebElement option : updatedListOptionSelect) {
-            System.out.println("Listado: " + option.getText());
+            logger.info("Listado: " + option.getText());
             // Convertir el texto del elemento en minúsculas y aplicar trim()
             String optionText = option.getText().toLowerCase().trim();
 

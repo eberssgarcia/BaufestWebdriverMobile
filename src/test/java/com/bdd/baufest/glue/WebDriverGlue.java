@@ -6,10 +6,10 @@ import io.appium.java_client.MobileElement;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.cucumber.java.Scenario;
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import io.cucumber.java.es.Cuando;
+import io.cucumber.java.es.Dado;
+import io.cucumber.java.es.Entonces;
+import io.cucumber.java.es.Y;
 import mobile.ManageScenario;
 import mobile.MobileDriverManager;
 import mobile.Util;
@@ -39,17 +39,17 @@ public class WebDriverGlue {
 
     // Sign up
 
-    @Given("que me encuentro en la aplicación webdriver")
+    @Dado("que me encuentro en la aplicación webdriver")
     public void que_me_encuentro_en_la_aplicación_webdriver() {
         MobileDriverManager.setMobileDriver();
     }
 
-    @When("doy de alta mi usuario {string} {string} {string}")
+    @Cuando("doy de alta mi usuario {string} {string} {string}")
     public void doy_de_alta_mi_usuario(String email, String password, String repeatPassword) {
         webDriverStep.doyDeAltaMiUsuario(email, password, repeatPassword);
     }
 
-    @Then("validar alerta de usuario registrado")
+    @Entonces("validar alerta de usuario registrado")
     public void validarAlertaDeUsuarioRegistrado() {
 
         String expectedMessage = webDriverStep.getAlertText();
@@ -58,46 +58,46 @@ public class WebDriverGlue {
 
     // Login
 
-    @When("inicio sesión con mi usuario {string} {string}")
+    @Cuando("inicio sesión con mi usuario {string} {string}")
     public void inicioSesiónConMiUsuario(String email, String password) {
         webDriverStep.login(email, password);
     }
 
-    @Then("validar alerta de usuario logeado")
+    @Entonces("validar alerta de usuario logeado")
     public void validar_alerta_de_usuario_logeado() {
         String expectedMessage = webDriverStep.getAlertText();
         Assert.assertEquals("You are logged in!", expectedMessage);
     }
 
     // Form
-    @When("completo la sección Form {string} {string}")
+    @Cuando("completo la sección Form {string} {string}")
     public void completoLaSeccionForm(String input, String criteriaSelect) {
         webDriverStep.enterCriteriaForForm(input, criteriaSelect);
     }
 
-    @And("hago click en el boton Active")
+    @Y("hago click en el boton Active")
     public void hagoClickEnElBotonActive() {
         webDriverStep.clickToButtonActive();
     }
 
-    @Then("validar alerta de button activo")
+    @Entonces("validar alerta de button activo")
     public void validarAlertaDeButtonActivo() {
         String expectedMessage = webDriverStep.getAlertText();
         Assert.assertEquals("This button is active", expectedMessage);
     }
 
     // Webview
-    @And("ingreso a la opcion Webview")
+    @Y("ingreso a la opcion Webview")
     public void ingresoALaOpcionWebview() {
         webDriverStep.clickToWebview();
     }
 
-    @When("realizo una busqueda de la palabra {string}")
+    @Cuando("realizo una busqueda de la palabra {string}")
     public void realizoUnaBusquedaDeLaPalabra(String criteria) {
         webDriverStep.clickToSearch(criteria);
     }
 
-    @Then("deberia poder ver los resultados de la busqueda {string}")
+    @Entonces("deberia poder ver los resultados de la busqueda {string}")
     public void deberiaPoderVerLosResultadosDeLaBusqueda(String expectedText) {
         String actualText = webDriverStep.validarResultado();
         actualText = actualText.toLowerCase();
@@ -105,12 +105,12 @@ public class WebDriverGlue {
         Assert.assertTrue("Los resultados no contienen la palabra '" + expectedText + "'", actualText.contains(expectedText));
     }
 
-    @When("navego entre los {string}")
+    @Cuando("navego entre los {string}")
     public void navegoEntreLosTabs(String criteria) {
         webDriverStep.selectAnTabs(criteria);
     }
 
-    @Then("deberia poder ver los resultados de la busqueda")
+    @Entonces("deberia poder ver los resultados de la busqueda")
     public void deberiaPoderVerLosResultadosDeLaBusqueda() {
         String expectedMessage = webDriverStep.validateTabs();
         Assert.assertEquals("On this page", expectedMessage);
