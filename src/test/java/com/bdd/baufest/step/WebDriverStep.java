@@ -50,9 +50,10 @@ public class WebDriverStep {
     public void clickToSearch(String criteria) {
         webDriverView().clickToSearch();
         webDriverView().enterToCriteria(criteria);
+        webDriverView().enterKeyBoard();
     }
 
-    public int getSizeResult(){
-        return webDriverView().getSizeResult();
+    public String validarResultado() {
+        return webDriverView().validarResultado();
     }
 }

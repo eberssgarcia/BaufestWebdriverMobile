@@ -87,19 +87,26 @@ public class WebDriverGlue {
     }
 
     // Webview
-    @And("ingreso a la opción Webview")
+    @And("ingreso a la opcion Webview")
     public void ingresoALaOpcionWebview() {
         webDriverStep.clickToWebview();
     }
 
-    @When("realizo una búsqueda de la palabra {string}")
+    @When("realizo una busqueda de la palabra {string}")
     public void realizoUnaBusquedaDeLaPalabra(String criteria) {
         webDriverStep.clickToSearch(criteria);
     }
 
-    @Then("debería poder ver los resultados de la búsqueda")
-    public void deberíaPoderVerLosResultadosDeLaBúsqueda() {
-        Assert.assertTrue("El tamaño de la lista es igual a 0.", webDriverStep.getSizeResult() > 0);
+    @Then("deberia poder ver los resultados de la busqueda {string}")
+    public void deberiaPoderVerLosResultadosDeLaBusqueda(String expectedText) {
+        String actualText = webDriverStep.validarResultado();
+
+        // Convertir ambas cadenas a minúsculas antes de comparar
+        actualText = actualText.toLowerCase();
+        expectedText = expectedText.toLowerCase();
+
+        Assert.assertTrue("Los resultados no contienen la palabra '" + expectedText + "'", actualText.contains(expectedText));
     }
+
 
 }

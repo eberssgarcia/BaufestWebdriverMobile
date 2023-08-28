@@ -3,7 +3,10 @@ package com.bdd.baufest.view;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.TouchAction;
+import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.AndroidElement;
+import io.appium.java_client.android.nativekey.AndroidKey;
+import io.appium.java_client.android.nativekey.KeyEvent;
 import io.appium.java_client.pagefactory.AndroidFindBy;
 import io.appium.java_client.touch.WaitOptions;
 import io.appium.java_client.touch.offset.PointOption;
@@ -12,6 +15,7 @@ import mobile.MobileDriverManager;
 import mobile.Util;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -58,10 +62,31 @@ public class WebDriverView extends BaseView {
     // Xpath - Webview
     @AndroidFindBy(xpath = "//android.widget.Button[@content-desc='Webview']")
     private MobileElement optionWebview;
-    @AndroidFindBy(xpath = "")
+    @AndroidFindBy(xpath = "//*[@class='android.widget.Button' and @text='Search']")
     private MobileElement btnSearch;
 
+    @AndroidFindBy(xpath = "//*[@class='android.widget.EditText' and @index='1']")
+    private MobileElement inputSearch;
+
     AppiumDriver<MobileElement> driver = getDriver();
+
+    // General methods
+    public void scrollGenerico() {
+        Dimension dimension = driver.manage().window().getSize();
+        int start_x = (int) (dimension.width * 0.5);
+        int start_y = (int) (dimension.height * 0.8);
+
+        int end_x = (int) (dimension.width * 0.2);
+        int end_y = (int) (dimension.height * 0.2);
+
+        TouchAction touchAction = new TouchAction(driver);
+        touchAction.press(PointOption.point(start_x, start_y)).waitAction(WaitOptions.waitOptions(Duration.ofSeconds(1))).moveTo(PointOption.point(end_x, end_y)).release().perform();
+    }
+
+    public void waitToElementVisible(WebElement locator) {
+        WebDriverWait webDriverWait = new WebDriverWait(getDriver(), 15);
+        webDriverWait.until(ExpectedConditions.visibilityOf(locator));
+    }
 
     // Methods - Sign Up
     public void clickToLogin() {
@@ -89,8 +114,7 @@ public class WebDriverView extends BaseView {
     }
 
     public String getAlertText() {
-        WebDriverWait webDriverWait = new WebDriverWait(getDriver(), 15);
-        webDriverWait.until(ExpectedConditions.visibilityOf(alertElement));
+        waitToElementVisible(alertElement);
         Util.takeScreenShoot();
         return alertElement.getText();
     }
@@ -118,38 +142,25 @@ public class WebDriverView extends BaseView {
 
         for (MobileElement option : updatedListOptionSelect) {
             if (option.getText().equals(criteriaSelect)) {
+                Util.takeScreenShoot();
                 option.click();
                 break;
             }
         }
     }
 
-    public void scrollGenerico() {
-        Dimension dimension = driver.manage().window().getSize();
-        int start_x = (int) (dimension.width * 0.5);
-        int start_y = (int) (dimension.height * 0.8);
-
-        int end_x = (int) (dimension.width * 0.2);
-        int end_y = (int) (dimension.height * 0.2);
-
-        TouchAction touchAction = new TouchAction(driver);
-        touchAction.press(PointOption.point(start_x, start_y)).waitAction(WaitOptions.waitOptions(Duration.ofSeconds(1))).moveTo(PointOption.point(end_x, end_y)).release().perform();
-    }
-
     public void clickToButtonActive() {
-        WebDriverWait wait = new WebDriverWait(driver, 30);
 
         try {
-            wait.until(ExpectedConditions.visibilityOf(btnActive));
+            waitToElementVisible(btnActive);
+            Util.takeScreenShoot();
         } catch (Exception e) {
             scrollGenerico(); // Llama al método de Scroll
-
-            // Espera a que el elemento btnActive esté visible después del desplazamiento
-            wait.until(ExpectedConditions.visibilityOf(btnActive));
+            waitToElementVisible(btnActive);
         }
-        // Intenta hacer click en el elemento
         try {
             btnActive.click();
+            Util.takeScreenShoot();
         } catch (Exception ex) {
             System.out.println("No se pudo hacer click en el elemento: " + ex.getMessage());
         }
@@ -161,16 +172,29 @@ public class WebDriverView extends BaseView {
     }
 
     public void clickToSearch() {
+        waitToElementVisible(btnSearch);
         btnSearch.click();
     }
 
     public void enterToCriteria(String criteria) {
-        inputSearch.sendKeys(criteria);
+        try {
+            inputSearch.sendKeys(criteria);
+            Util.takeScreenShoot();
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
-    public int getSizeResult() {
-        WebDriverWait webDriverWait = new WebDriverWait(MobileDriverManager.getDriver(), 10);
-        webDriverWait.until(ExpectedConditions.visibilityOf(resultList.get(0)));
-        return resultList.size();
+
+    public void enterKeyBoard() {
+        ((AndroidDriver) MobileDriverManager.getDriver()).pressKey(new KeyEvent(AndroidKey.ENTER));
+    }
+
+    public String validarResultado() {
+        MobileElement resultadosElement = driver.findElementByXPath("//*[@class='android.widget.TextView' and @text='The Browser Object']"); // Reemplaza con tu propio XPath
+        String resultadosTexto = resultadosElement.getText();
+        Util.takeScreenShoot();
+        return resultadosTexto;
     }
 }
